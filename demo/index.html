@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <script type="module" src="./index.js">
+  </script>  
+</head>
+
+<!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+
+<body>
+
+<firebase-app>
+<!--key goes here-->
+</firebase-app>
+
+<firebase-auth id="auth" app-name="" provider="google,github,microsoft"></firebase-auth>
+<app-test></app-test>
+
+</body>
+
+
+<script>
+  
+</script>
