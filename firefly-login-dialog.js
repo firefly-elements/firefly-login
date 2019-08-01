@@ -56,7 +56,7 @@ class FireflyLoginDialog extends FireflyLoginMixin(
         }
       </style>
 
-      <firebase-auth app-name="husky"></firebase-auth>
+      <firebase-auth app-name="pharm2market-admin"></firebase-auth>
 
       <paper-dialog>
         <h2>Login to Your custom App</h2>
