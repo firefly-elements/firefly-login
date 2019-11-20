@@ -1,4 +1,3 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 import FireflyLoginProviderItem from "./firefly-login-provider-item";
 import "./firefly-login-icons";
 
@@ -11,14 +10,6 @@ import "./firefly-login-icons";
  * @extends {FireflyLoginProviderItem}
  */
 class FireflyTwitterLoginItem extends FireflyLoginProviderItem {
-  static get properties() {
-    return {};
-  }
-
-  static get template() {
-    return html``;
-  }
-
   /**
    * Instance of the element is created/upgraded. Use: initializing state,
    * set up event listeners, create shadow dom.

@@ -1,8 +1,8 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-item/paper-icon-item.js';
-import '@polymer/iron-icon/iron-icon.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
+import "@polymer/paper-item/paper-icon-item.js";
+import "@polymer/iron-icon/iron-icon.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
 /**
  * `firefly-login-provider-item` This base class provides the methods and properties
  * needed to support login providers.
@@ -44,7 +44,7 @@ export default class FireflyLoginProviderItem extends PolymerElement {
    * String providing the tag name to register the element under.
    */
   static get is() {
-    return 'firefly-login-provider-item';
+    return "firefly-login-provider-item";
   }
 
   /**
@@ -55,21 +55,20 @@ export default class FireflyLoginProviderItem extends PolymerElement {
       /** The ID of the item is the auth provider. i.e. 'google', 'facebook', etc */
       id: {
         type: String,
-        value: ''
+        value: ""
       },
 
       /** The text of the label to be displayed. */
       label: {
         type: String,
-        value: ''
+        value: ""
       },
 
       /** The icon to be displayed. */
       icon: {
         type: String,
-        value: ''
-      },
-
+        value: ""
+      }
     };
   }
 
@@ -107,7 +106,7 @@ export default class FireflyLoginProviderItem extends PolymerElement {
       .catch(msg => {
         console.error(msg);
         this.dispatchEvent(
-          new CustomEvent('show-msg', {
+          new CustomEvent("show-msg", {
             bubbles: true,
             composed: true,
             detail: {
@@ -117,8 +116,6 @@ export default class FireflyLoginProviderItem extends PolymerElement {
         );
       });
   }
-
-
 
   /**
    * This method is responsible for creating an account
