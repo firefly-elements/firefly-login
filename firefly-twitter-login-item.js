@@ -1,6 +1,5 @@
 import FireflyLoginProviderItem from "./firefly-login-provider-item";
 import "./firefly-login-icons";
-
 /**
  * `firefly-twitter-login-item` This component allows the user to log into the system using Twitter authentication.
  *
@@ -17,11 +16,9 @@ class FireflyTwitterLoginItem extends FireflyLoginProviderItem {
    */
   constructor() {
     super();
-
     this.label = "Twitter";
     this.icon = "login:twitter";
   }
-
   /**
    * Use for one-time configuration of your component after local
    * DOM is initialized.
@@ -29,7 +26,6 @@ class FireflyTwitterLoginItem extends FireflyLoginProviderItem {
   ready() {
     super.ready();
   }
-
   /** @Override */
   createAccount(response) {
     console.log(response);
@@ -55,5 +51,3 @@ class FireflyTwitterLoginItem extends FireflyLoginProviderItem {
     );
   }
 }
-
-customElements.define("firefly-twitter-login-item", FireflyTwitterLoginItem);

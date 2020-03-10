@@ -1,14 +1,14 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@polymer/paper-input/paper-input.js';
-import '@vaadin/vaadin-text-field/vaadin-text-field';
-import '@vaadin/vaadin-text-field/vaadin-password-field';
-import '@polymer/iron-selector/iron-selector.js';
-import { AspenDialogMixin } from '@aspen-elements/aspen-dialog-mixin';
-import { FireflyLoginMixin } from './firefly-login-mixin.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import "@polymer/paper-dialog/paper-dialog.js";
+import "@polymer/paper-button/paper-button.js";
+import "@polymer/iron-flex-layout/iron-flex-layout.js";
+import "@polymer/paper-input/paper-input.js";
+import "@vaadin/vaadin-text-field/vaadin-text-field";
+import "@vaadin/vaadin-text-field/vaadin-password-field";
+import "@polymer/iron-selector/iron-selector.js";
+import { AspenDialogMixin } from "@aspen-elements/aspen-dialog-mixin";
+import { FireflyLoginMixin } from "./firefly-login-mixin.js";
+import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
 
 /**
  * `firefly-email-login-dialog` This dialog displays a number of login provider options and
@@ -26,7 +26,7 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
    * String providing the tag name to register the element under.
    */
   static get is() {
-    return 'firefly-email-login-dialog';
+    return "firefly-email-login-dialog";
   }
 
   static get template() {
@@ -88,6 +88,7 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
           <vaadin-text-field
             label="Email Address"
             value="{{model.email}}"
+            autocapitalize="none"
             required
           ></vaadin-text-field>
           <vaadin-password-field
@@ -114,7 +115,7 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
       /** The label to be displayed in the dialog. */
       __label: {
         type: String,
-        computed: '__computeLabel(createAccount)'
+        computed: "__computeLabel(createAccount)"
       }
     };
   }
@@ -143,29 +144,29 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
    * @param {Boolean} createAccount a flag that determines if the user wants to create an account.
    */
   __computeLabel(createAccount) {
-    return createAccount ? 'Create an Account ' : 'Login To Your App';
+    return createAccount ? "Create an Account " : "Login To Your App";
   }
 
   /** @Override */
   handleLogin(e) {
     if (this.createAccount) {
       debugger;
-      console.log('Got here');
+      console.log("Got here");
       this.auth
         .createUserWithEmailAndPassword(this.model.email, this.model.password)
         .then(userCredential => {
-          console.log('Credential');
+          console.log("Credential");
           console.log(userCredential);
           let user = {
             firstName: this.model.firstName,
             lastName: this.model.lastName,
-            twitter: this.model.twitter || '',
+            twitter: this.model.twitter || "",
             inDemoMode: true,
             email: this.model.email
           };
 
           this.dispatchEvent(
-            new CustomEvent('create-account', {
+            new CustomEvent("create-account", {
               bubbles: true,
               composed: true,
               detail: {
@@ -193,22 +194,22 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
   __handleError(error) {
     var errorCode = error.code;
     var errorMessage = error.message;
-    let msg = '';
-    if (errorCode == 'auth/weak-password') {
-      msg = 'The password is too weak.';
-    } else if (errorCode == 'auth/email-already-in-use') {
-      msg = 'The email address is already in use';
-    } else if (errorCode == 'auth/invalid-email') {
-      msg = 'The email address is invalid';
-    } else if (errorCode == 'auth/weak-password') {
-      msg = 'The password is too weak';
-    } else if (errorCode == 'auth/wrong-password') {
-      msg = 'Attempted to login using the wrong password';
+    let msg = "";
+    if (errorCode == "auth/weak-password") {
+      msg = "The password is too weak.";
+    } else if (errorCode == "auth/email-already-in-use") {
+      msg = "The email address is already in use";
+    } else if (errorCode == "auth/invalid-email") {
+      msg = "The email address is invalid";
+    } else if (errorCode == "auth/weak-password") {
+      msg = "The password is too weak";
+    } else if (errorCode == "auth/wrong-password") {
+      msg = "Attempted to login using the wrong password";
     }
 
     if (msg) {
       this.dispatchEvent(
-        new CustomEvent('show-msg', {
+        new CustomEvent("show-msg", {
           bubbles: true,
           composed: true,
           detail: {

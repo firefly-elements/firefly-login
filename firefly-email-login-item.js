@@ -1,6 +1,6 @@
-import FireflyLoginProviderItem from './firefly-login-provider-item.js';
-import './firefly-login-icons.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import FireflyLoginProviderItem from "./firefly-login-provider-item.js";
+import "./firefly-login-icons.js";
+import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
 
 /**
  * `firefly-email-login-item` This component allows the user to log into the system using email & password authentication.
@@ -15,7 +15,7 @@ class FireflyEmailLoginItem extends FireflyLoginProviderItem {
    * String providing the tag name to register the element under.
    */
   static get is() {
-    return 'firefly-email-login-item';
+    return "firefly-email-login-item";
   }
 
   /**
@@ -26,8 +26,8 @@ class FireflyEmailLoginItem extends FireflyLoginProviderItem {
   constructor() {
     super();
 
-    this.label = 'Email & Password';
-    this.icon = 'login:email';
+    this.label = "Email & Password";
+    this.icon = "login:email";
   }
 
   /**
@@ -46,7 +46,7 @@ class FireflyEmailLoginItem extends FireflyLoginProviderItem {
    */
   handleLogin(auth, createAccount) {
     this.dispatchEvent(
-      new CustomEvent('show-email-login-dialog', {
+      new CustomEvent("show-email-login-dialog", {
         bubbles: true,
         composed: true,
         detail: {
@@ -67,12 +67,12 @@ class FireflyEmailLoginItem extends FireflyLoginProviderItem {
       avatar: firebaseUser.picture
     };
     this.dispatchEvent(
-      new CustomEvent('show-create-account-dialog', {
+      new CustomEvent("show-create-account-dialog", {
         bubbles: true,
         composed: true,
         detail: {
           user: user,
-          provider: 'email',
+          provider: "email",
           uid: firebaseUser.uid
         }
       })
