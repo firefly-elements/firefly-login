@@ -51,3 +51,4 @@ class FireflyTwitterLoginItem extends FireflyLoginProviderItem {
     );
   }
 }
+customElements.define("firefly-twitter-login-item", FireflyTwitterLoginItem);
