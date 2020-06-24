@@ -9,7 +9,6 @@ import "@polymer/iron-selector/iron-selector.js";
 import { AspenDialogMixin } from "@aspen-elements/aspen-dialog-mixin";
 import { FireflyLoginMixin } from "./firefly-login-mixin.js";
 import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
-
 /**
  * `firefly-email-login-dialog` This dialog displays a number of login provider options and
  * allows the user to select one of them.
@@ -28,44 +27,46 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
   static get is() {
     return "firefly-email-login-dialog";
   }
-
   static get template() {
     return html`
       <style>
         :host {
           display: block;
         }
-
         h2 {
           color: var(--app-header-color);
           font-size: 1.2em;
         }
-
         paper-dialog {
           width: fit-content;
           border-radius: 5px;
           background-color: rgba(255, 255, 255, 0.9);
           border: 1px solid white;
         }
-
         paper-dialog > div {
           @apply --layout-vertical;
         }
-
         paper-button {
           background-color: var(--app-header-color);
           color: white;
           width: fit-content;
         }
-
+        .forgot-password-link {
+          margin: 7px 0;
+          color: #4285f4;
+          text-align: right;
+          cursor: pointer;
+          font-size: 12px;
+        }
+        .forgot-password-link:hover {
+          color: #274f92;
+        }
         .buttons {
           @apply --layout-horizontal;
         }
       </style>
-
       <paper-dialog modal>
         <h2>[[__label]]</h2>
-
         <div>
           <template is="dom-if" if="[[createAccount]]">
             <vaadin-text-field
@@ -88,7 +89,6 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
           <vaadin-text-field
             label="Email Address"
             value="{{model.email}}"
-            autocapitalize="none"
             required
           ></vaadin-text-field>
           <vaadin-password-field
@@ -98,8 +98,12 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
             type="password"
           >
           </vaadin-password-field>
+          <template is="dom-if" if="[[!createAccount]]">
+            <a class="forgot-password-link" on-click="__openEmailDialog"
+              >Forgot Password?</a
+            >
+          </template>
         </div>
-
         <div class="buttons">
           <paper-button dialog-dismiss>Cancel</paper-button>
           <paper-button dialog-confirm autofocus on-tap="handleLogin"
@@ -107,19 +111,36 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
           >
         </div>
       </paper-dialog>
+      <paper-dialog modal class="email-modal">
+        <h2>Forgot Password</h2>
+        <vaadin-text-field
+          label="Email Address"
+          value="{{passwordResetEmail}}"
+          required
+        ></vaadin-text-field>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button autofocus on-tap="__handleForgotPasswod"
+            >Submit</paper-button
+          >
+        </div>
+      </paper-dialog>
     `;
   }
-
   static get properties() {
     return {
       /** The label to be displayed in the dialog. */
       __label: {
         type: String,
         computed: "__computeLabel(createAccount)"
+      },
+      // the email for password rest
+      passwordResetEmail: {
+        type: String,
+        value: ""
       }
     };
   }
-
   /**
    * Instance of the element is created/upgraded. Use: initializing state,
    * set up event listeners, create shadow dom.
@@ -128,16 +149,13 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
   constructor() {
     super();
   }
-
   /**
    * Use for one-time configuration of your component after local DOM is initialized.
    */
   ready() {
     super.ready();
-
     afterNextRender(this, function() {});
   }
-
   /**
    * This method creates a different dialog label depending on whether or not the
    * user is creating an account.
@@ -146,7 +164,6 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
   __computeLabel(createAccount) {
     return createAccount ? "Create an Account " : "Login To Your App";
   }
-
   /** @Override */
   handleLogin(e) {
     if (this.createAccount) {
@@ -164,7 +181,6 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
             inDemoMode: true,
             email: this.model.email
           };
-
           this.dispatchEvent(
             new CustomEvent("create-account", {
               bubbles: true,
@@ -187,13 +203,11 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
         });
     }
   }
-
   /**
    * This method is responsible for handling
    */
   __handleError(error) {
-    var errorCode = error.code;
-    var errorMessage = error.message;
+    let errorCode = error.code;
     let msg = "";
     if (errorCode == "auth/weak-password") {
       msg = "The password is too weak.";
@@ -205,8 +219,9 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
       msg = "The password is too weak";
     } else if (errorCode == "auth/wrong-password") {
       msg = "Attempted to login using the wrong password";
+    } else if (errorCode == "auth/user-not-found") {
+      msg = "There is no user record corresponding to this email address.";
     }
-
     if (msg) {
       this.dispatchEvent(
         new CustomEvent("show-msg", {
@@ -219,8 +234,36 @@ class FireflyEmailLoginDialog extends FireflyLoginMixin(
       );
     }
   }
+  /**
+   * opens the email dialog for submitiing email for password reset
+   */
+  __openEmailDialog() {
+    this.passwordResetEmail = "";
+    this.shadowRoot.querySelector(".email-modal").open();
+  }
+  /**
+   * This method is responsible for handling forgot password flow
+   */
+  __handleForgotPasswod() {
+    this.auth
+      .sendPasswordResetEmail(this.passwordResetEmail)
+      .then(() => {
+        this.dispatchEvent(
+          new CustomEvent("show-msg", {
+            bubbles: true,
+            composed: true,
+            detail: {
+              msg: `A confirmation email has been sent to ${this.passwordResetEmail}.`
+            }
+          })
+        );
+        this.shadowRoot.querySelector(".email-modal").close();
+      })
+      .catch(error => {
+        this.__handleError(error);
+      });
+  }
 }
-
 window.customElements.define(
   FireflyEmailLoginDialog.is,
   FireflyEmailLoginDialog
